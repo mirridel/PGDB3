@@ -50,7 +50,6 @@ public class OrdersGateway extends AbstractGateway<Orders> {
         List list = null;
         try {
             URL url = new URL ("http://localhost:5000/rest/orders/search_by_date/" + date);
-            System.out.println(url);
             StringBuilder response = searchManager(url);
             list = stringToArray(response.toString(), getSH());
 
@@ -62,7 +61,6 @@ public class OrdersGateway extends AbstractGateway<Orders> {
         List list = null;
         try {
             URL url = new URL ("http://localhost:5000/rest/orders/search_by_time/" + left.toString() + "/" + right.toString());
-            System.out.println(url);
             StringBuilder response = searchManager(url);
             list = stringToArray(response.toString(), getSH());
 
@@ -71,7 +69,14 @@ public class OrdersGateway extends AbstractGateway<Orders> {
     }
 
     public List getByConfirmation(Boolean confirmation) {
-        return null;
+        List list = null;
+        try {
+            URL url = new URL ("http://localhost:5000/rest/orders/search_by_confirmation/" + confirmation);
+            StringBuilder response = searchManager(url);
+            list = stringToArray(response.toString(), getSH());
+
+        } catch (Exception e) { }
+        return list;
     }
 
     @Override

@@ -203,10 +203,6 @@ public abstract class AbstractGateway<T> {
         return response;
     }
 
-    protected List findByQuery (){
-        return null;
-    }
-
     protected abstract Class<T> getType();
 
     protected abstract String getTableName();

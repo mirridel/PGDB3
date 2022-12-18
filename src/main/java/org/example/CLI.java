@@ -3,11 +3,6 @@ package org.example;
 import Gateways.*;
 import Tables.*;
 
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -40,22 +35,19 @@ public class CLI {
     Pattern pattern_name = Pattern.compile(regex_name);
     String regex_email = "^[A-Za-z0-9+_.-]+@(.+)$";
     Pattern pattern_email = Pattern.compile(regex_email);
-    String regex_date = "^(20[0-9][0-9]-[01][0-9]-[0-3][0-9])?$";
+    String regex_date = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
     Pattern pattern_date = Pattern.compile(regex_date);
-    String regex_time = "^([0-2][0-4]:[0-5][0-9]:[0-5][0-9])$";
+    String regex_time = "^(?:(?:([01]?\\d|2[0-3]):)?([0-5]?\\d):)?([0-5]?\\d)$";
     Pattern pattern_time = Pattern.compile(regex_time);
 
-    DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
-
-    public void begin() throws IOException {
+    public void begin() {
         createCLI();
     }
 
-    private void createCLI() throws IOException{
+    private void createCLI() {
 
         boolean exitTrigger = true;
-        Integer number = null;
-
+        int number;
         while (exitTrigger) {
             System.out.println("Menu:");
             System.out.println("1. Stores");
@@ -75,38 +67,17 @@ public class CLI {
                 sc.next();
             }
             number = sc.nextInt();
-
             switch (number) {
-                case 1 -> {
-                    beginStoresMenu();
-                }
-                case 2 -> {
-                    beginCategoriesMenu();
-                }
-                case 3 -> {
-                    beginVendorsMenu();
-                }
-                case 4 -> {
-                    beginProductsMenu();
-                }
-                case 5 -> {
-                    beginClientsMenu();
-                }
-                case 6 -> {
-                    beginOrdersMenu();
-                }
-                case 7 -> {
-                    beginCouriersMenu();
-                }
-                case 8 -> {
-                    beginDeliveryMenu();
-                }
-                case 9 -> {
-                    beginShoppingCartMenu();
-                }
-                case 0 -> {
-                    exitTrigger = false;
-                }
+                case 1 -> beginStoresMenu();
+                case 2 -> beginCategoriesMenu();
+                case 3 -> beginVendorsMenu();
+                case 4 -> beginProductsMenu();
+                case 5 -> beginClientsMenu();
+                case 6 -> beginOrdersMenu();
+                case 7 -> beginCouriersMenu();
+                case 8 -> beginDeliveryMenu();
+                case 9 -> beginShoppingCartMenu();
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -114,14 +85,14 @@ public class CLI {
 
         List results = null;
         Integer number = null;
-        Integer count = (int) (long) gateway.getCount();
-        Integer countPages = (int) Math.ceil((float) count / (float) pageSize);
-        Integer selectedPage = 1;
+        int count = (int) (long) gateway.getCount();
+        int countPages = (int) Math.ceil((float) count / (float) pageSize);
+        int selectedPage = 1;
 
         System.out.println("Total number of records: " + count);
         System.out.println("Number of pages: " + countPages);
         if (count > 0) {
-            Boolean localExitTrigger = true;
+            boolean localExitTrigger = true;
             while (localExitTrigger) {
                 results = gateway.getList((selectedPage - 1) * pageSize, pageSize);
                 int localID = 0;
@@ -1904,39 +1875,56 @@ public class CLI {
 
                         switch (number) {
                             case 1: {
-                                Scanner scanner = new Scanner(System.in);
-                                String firstname = null;
-                                System.out.println("Enter firstname:");
-                                firstname = scanner.nextLine();
-                                results = couriersGateway.searchByFirstname(firstname);
-                                System.out.println(results.size() + " records were searched.");
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    System.out.println("Enter firstname:");
+                                    String firstname = scanner.nextLine();
+                                    results = couriersGateway.searchByFirstname(firstname);
+                                    System.out.println(results.size() + " records were searched.");
+                                }
+                                catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
+                                }
                                 break;
                             }
                             case 2: {
-                                Scanner scanner = new Scanner(System.in);
-                                String lastname = null;
-                                System.out.println("Enter firstname:");
-                                lastname = scanner.nextLine();
-                                results = couriersGateway.searchByLastname(lastname);
-                                System.out.println(results.size() + " records were searched.");
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    System.out.println("Enter firstname:");
+                                    String lastname = scanner.nextLine();
+                                    results = couriersGateway.searchByLastname(lastname);
+                                    System.out.println(results.size() + " records were searched.");
+                                }
+                                catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
+                                }
                                 break;
                             }
                             case 3: {
-                                Scanner scanner = new Scanner(System.in);
-                                String email = null;
-                                System.out.println("Enter email:");
-                                email = scanner.nextLine();
-                                results = couriersGateway.searchByEmail(email);
-                                System.out.println(results.size() + " records were searched.");
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    String email = null;
+                                    System.out.println("Enter email:");
+                                    email = scanner.nextLine();
+                                    results = couriersGateway.searchByEmail(email);
+                                    System.out.println(results.size() + " records were searched.");
+                                }
+                                catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
+                                }
                                 break;
                             }
                             case 4: {
-                                Scanner scanner = new Scanner(System.in);
-                                String contactNumber = null;
-                                System.out.println("Enter contact number:");
-                                contactNumber = scanner.nextLine();
-                                results = couriersGateway.searchByContactNumber(contactNumber);
-                                System.out.println(results.size() + " records were searched.");
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    System.out.println("Enter contact number:");
+                                    String contactNumber = scanner.nextLine();
+                                    results = couriersGateway.searchByContactNumber(contactNumber);
+                                    System.out.println(results.size() + " records were searched.");
+                                }
+                                catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
+                                }
                                 break;
                             }
                             case 0: {
@@ -2320,10 +2308,10 @@ public class CLI {
 
                         ShoppingCart shoppingCart = new ShoppingCart();
 
-                        Integer amount = null;
+                        Integer amount;
 
                         List result = shoppingCartGateway.getByOrderAndProduct(orderPointer, productPointer);
-                        if (result.isEmpty()){
+                        if (result == null || result.isEmpty()){
                             Orders order = orderPointer;
                             shoppingCart.setOrder(order);
                             Products product = productPointer;
