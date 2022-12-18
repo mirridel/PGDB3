@@ -43,11 +43,4 @@ public class Categories {
                 "name=" + name +
                 '}';
     }
-
-    public void parseJson(String data) {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        Object obj = gson.fromJson(data, this.getClass());
-        System.out.println(obj.toString());
-    }
 }

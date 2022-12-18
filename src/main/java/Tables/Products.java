@@ -3,8 +3,6 @@ package Tables;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.util.HashSet;
 import java.util.Set;
 

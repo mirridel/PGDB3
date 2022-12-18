@@ -17,12 +17,12 @@ import java.util.List;
 
 public abstract class AbstractGateway<T> {
 
-    public static <T> List<T> stringToArray(String s, Class<T[]> clazz) {
+    public static <T> List<T> stringToArray(String s, Class<T[]> class_) {
         try {
-            T[] arr = new Gson().fromJson(s, clazz);
+            T[] arr = new Gson().fromJson(s, class_);
             return Arrays.asList(arr);
         }
-        catch (Exception ex){ }
+        catch (Exception ignored){ }
         return null;
     }
 
@@ -32,9 +32,9 @@ public abstract class AbstractGateway<T> {
             GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
             Gson gson = builder.create();
             String json = gson.toJson(data);
-            System.out.println(data);
+            //System.out.println(data);
             String jsonString = "{\"table_name\": \"" + getTableName() + "\", \"obj\": "+ json +"}";
-            System.out.println(jsonString);
+            //System.out.println(jsonString);
             URL url = new URL ("http://localhost:5000/rest/update");
             StringBuilder response = postSearchManager(url, jsonString);
 
@@ -42,57 +42,25 @@ public abstract class AbstractGateway<T> {
             try{
                 pos = Integer.parseInt(response.toString());
             }
-            catch (NumberFormatException ex){ }
+            catch (NumberFormatException ignored){ }
             try {
                 if (pos != -1)
                     result = getById(pos);
             }
-            catch (Exception ex) { }
-        } catch (Exception ex) { }
+            catch (Exception ignored) { }
+        } catch (Exception ignored) { }
         return result;
     }
 
     public T getById(int id){
         T result = null;
         String jsonString = "{\"table_name\": \"" + getTableName() + "\", \"id\": \"" + id + "\"}";
-
         try {
-            URL url = new URL ("http://localhost:5000/rest/get");
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-
-            try(OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonString.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-
-            StringBuilder response = new StringBuilder();;
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-            }
-
-            System.out.println(response);
-
             Gson gson = new Gson();
+            URL url = new URL ("http://localhost:5000/rest/get");
+            StringBuilder response = postSearchManager(url, jsonString);
             result = gson.fromJson(response.toString(), getType());
-
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        } catch (Exception ignored) { }
         return result;
     }
 
@@ -103,43 +71,20 @@ public abstract class AbstractGateway<T> {
             String jsonString = "{\"table_name\": \"" + getTableName() + "\", \"obj\": "+ json +"}";
             URL url = new URL ("http://localhost:5000/rest/delete");
             StringBuilder response = postSearchManager(url, jsonString);
-        } catch (Exception ex) { }
+        } catch (Exception ignored) { }
     }
 
     public Long getCount() {
-        Long result = null;
 
+        Long result = null;
         try {
             URL url = new URL ("http://localhost:5000/rest/get_size/" + getTableName());
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-
-            StringBuilder response = new StringBuilder();;
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-            }
+            StringBuilder response = searchManager(url);
             try{
                 result = Long.parseLong(response.toString());
             }
-            catch (NumberFormatException ex){
-                ex.printStackTrace();
-            }
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            catch (NumberFormatException ex){ }
+        } catch (Exception ex) { }
         return result;
     }
 
@@ -176,9 +121,9 @@ public abstract class AbstractGateway<T> {
                 response.append(responseLine.trim());
             }
         }
-        System.out.println("Before " + response.toString());
+        //System.out.println("Before " + response.toString());
         con.disconnect();
-        System.out.println("After " + response.toString());
+        //System.out.println("After " + response.toString());
         return response;
     }
 

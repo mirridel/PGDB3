@@ -264,22 +264,17 @@ public class CLI {
 
             switch (number) {
                 // LOAD STORES
-                case 1: {
-                    results = loadPage(storesGateway);
-                    break;
-                }
+                case 1 -> results = loadPage(storesGateway);
                 // PRINT LOADED STORES
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 2 -> printLoadedData(results);
+
                 // CREATE STORE
-                case 3: {
+                case 3 -> {
                     Stores store = new Stores();
                     // SET EMAIL
                     Scanner scanner_email = new Scanner(System.in);
                     String email = null;
-                    while(true){
+                    while (true) {
                         System.out.println("Enter store email:");
                         email = scanner_email.nextLine();
                         if (storesGateway.getByEmail(email) != null)
@@ -302,16 +297,13 @@ public class CLI {
                         scanner_delivery.next();
                     }
                     paidDelivery = scanner_delivery.nextBoolean();
-                    if (paidDelivery)
-                        store.setPaidDelivery(true);
-                    else
-                        store.setPaidDelivery(false);
+                    store.setPaidDelivery(paidDelivery);
                     // CREATE
                     storePointer = storesGateway.update(store);
-                    break;
                 }
+
                 // GET STORE
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -322,10 +314,10 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             storePointer = (Stores) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT EMAIL
-                case 5: {
+                case 5 -> {
                     if (storePointer != null) {
                         Scanner scanner = new Scanner(System.in);
                         // CHANGE EMAIL
@@ -353,27 +345,24 @@ public class CLI {
                             scanner.next();
                         }
                         paidDelivery = scanner.nextBoolean();
-                        if (paidDelivery)
-                            storePointer.setPaidDelivery(true);
-                        else
-                            storePointer.setPaidDelivery(false);
+                        storePointer.setPaidDelivery(paidDelivery);
                         // UPDATE
                         storePointer = storesGateway.update(storePointer);
                     }
-                    break;
                 }
+
                 // DELETE STORE
-                case 6: {
+                case 6 -> {
                     if (storePointer != null) {
                         storesGateway.delete(storePointer);
                         storePointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH STORE
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Store search:");
                         System.out.println("1. Get by email");
                         System.out.println("2. Search by email");
@@ -386,23 +375,19 @@ public class CLI {
                         }
                         number = sc.nextInt();
                         switch (number) {
-                            case 1: {
+                            case 1 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String email = null;
-                                while(true){
+                                do {
                                     System.out.println("Enter store email:");
                                     email = scanner.nextLine();
-                                    if(pattern_email.matcher(email).matches()){
-                                        break;
-                                    }
-                                }
+                                } while (!pattern_email.matcher(email).matches());
                                 results = storesGateway.getByEmail(email);
                                 if (results != null) {
                                     System.out.println(results.size() + " records were searched.");
                                 }
-                                break;
                             }
-                            case 2: {
+                            case 2 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 System.out.println("Enter store email:");
                                 String email = scanner.nextLine();
@@ -410,9 +395,8 @@ public class CLI {
                                 if (results != null) {
                                     System.out.println(results.size() + " records were searched.");
                                 }
-                                break;
                             }
-                            case 3: {
+                            case 3 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 Boolean paidDelivery = null;
                                 System.out.println("Paid delivery?");
@@ -427,20 +411,12 @@ public class CLI {
                                 if (results != null) {
                                     System.out.println(results.size() + " records were searched.");
                                 }
-                                break;
                             }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    System.out.println("Exiting!");
-                    exitTrigger = false;
-                    break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -472,30 +448,24 @@ public class CLI {
 
             switch (number) {
                 // LOAD CATEGORIES
-                case 1: {
-                    results = loadPage(categoriesGateway);
-                    break;
-                }
+                case 1 -> results = loadPage(categoriesGateway);
                 // PRINT LOADED CATEGORIES
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 2 -> printLoadedData(results);
+
                 // CREATE CATEGORY
-                case 3: {
+                case 3 -> {
                     Scanner scanner = new Scanner(System.in);
                     Categories category = new Categories();
 
                     String name;
-                    while(true){
+                    while (true) {
                         System.out.println("Enter category name:");
                         name = scanner.nextLine();
-                        if (categoriesGateway.getByName(name) != null){
+                        if (categoriesGateway.getByName(name) != null) {
                             System.out.println("This category already exists!");
                             name = null;
                             break;
-                        }
-                        else if (pattern_name.matcher(name).matches())
+                        } else if (pattern_name.matcher(name).matches())
                             break;
                         else
                             System.out.println("Invalid input!");
@@ -504,10 +474,10 @@ public class CLI {
                         category.setName(name);
                         categoriesPointer = categoriesGateway.update(category);
                     }
-                    break;
                 }
+
                 // GET CATEGORY
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -518,43 +488,41 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             categoriesPointer = (Categories) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT CATEGORY
-                case 5:{
+                case 5 -> {
                     if (categoriesPointer != null) {
                         Scanner scanner = new Scanner(System.in);
                         String name = null;
-                        while(true){
+                        while (true) {
                             System.out.println("Enter new category name:");
                             name = scanner.nextLine();
-                            if (name.isEmpty()){
+                            if (name.isEmpty()) {
                                 break;
-                            }
-                            else if (categoriesGateway.getByName(name) != null){
+                            } else if (categoriesGateway.getByName(name) != null) {
                                 System.out.println("This category already exists!");
-                            }
-                            else if(pattern_name.matcher(name).matches()){
+                            } else if (pattern_name.matcher(name).matches()) {
                                 categoriesPointer.setName(name);
                                 categoriesPointer = categoriesGateway.update(categoriesPointer);
                                 break;
                             }
                         }
                     }
-                    break;
                 }
+
                 // DELETE CATEGORY
-                case 6: {
+                case 6 -> {
                     if (categoriesPointer != null) {
                         categoriesGateway.delete(categoriesPointer);
                         categoriesPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH CATEGORY
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Categories search:");
                         System.out.println("1. Get by name");
                         System.out.println("2. Search by name");
@@ -567,51 +535,36 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
+                            case 1 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String name = null;
-                                while(true){
+                                do {
                                     System.out.println("Enter category name:");
                                     name = scanner.nextLine();
-                                    if(pattern_name.matcher(name).matches()){
-                                        break;
-                                    }
-                                }
+                                } while (!pattern_name.matcher(name).matches());
 
-                                    results = categoriesGateway.getByName(name);
+                                results = categoriesGateway.getByName(name);
                                 if (results != null) {
                                     System.out.println(results.size() + " records were searched.");
                                 }
-                                break;
                             }
-                            case 2: {
+                            case 2 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String name = null;
-                                while(true){
+                                do {
                                     System.out.println("Enter category name:");
                                     name = scanner.nextLine();
-                                    if(pattern_name.matcher(name).matches()){
-                                        break;
-                                    }
-                                }
+                                } while (!pattern_name.matcher(name).matches());
                                 results = categoriesGateway.searchByName(name);
                                 if (results != null) {
                                     System.out.println(results.size() + " records were searched.");
                                 }
-                                break;
                             }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    System.out.println("Exiting!");
-                    exitTrigger = false;
-                    break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -643,28 +596,22 @@ public class CLI {
 
             switch (number) {
                 // LOAD VENDORS
-                case 1: {
-                    results = loadPage(vendorsGateway);
-                    break;
-                }
+                case 1 -> results = loadPage(vendorsGateway);
                 // PRINT LOADED VENDORS
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 2 -> printLoadedData(results);
+
                 // CREATE VENDOR
-                case 3: {
+                case 3 -> {
                     Scanner scanner = new Scanner(System.in);
                     Vendors vendor = new Vendors();
 
                     String name;
-                    while(true){
+                    while (true) {
                         System.out.println("Enter vendor name:");
                         name = scanner.nextLine();
-                        if (vendorsGateway.getByName(name) != null){
+                        if (vendorsGateway.getByName(name) != null) {
                             System.out.println("This vendor already exists!");
-                        }
-                        else if (pattern_name.matcher(name).matches())
+                        } else if (pattern_name.matcher(name).matches())
                             break;
                         System.out.println("Invalid input!");
                     }
@@ -672,10 +619,10 @@ public class CLI {
                         vendor.setName(name);
                         vendorPointer = vendorsGateway.update(vendor);
                     }
-                    break;
                 }
+
                 // GET VENDOR
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -686,45 +633,43 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             vendorPointer = (Vendors) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT VENDOR
-                case 5:{
+                case 5 -> {
                     if (vendorPointer != null) {
                         Scanner scanner = new Scanner(System.in);
                         String name = null;
-                        while(true){
+                        while (true) {
                             System.out.println("Enter new vendor name:");
                             name = scanner.nextLine();
 
-                            if (name.isEmpty()){
+                            if (name.isEmpty()) {
                                 break;
-                            }
-                            else if (vendorsGateway.getByName(name) != null){
+                            } else if (vendorsGateway.getByName(name) != null) {
                                 System.out.println("This vendor already exists!");
-                            }
-                            else if(pattern_name.matcher(name).matches()){
+                            } else if (pattern_name.matcher(name).matches()) {
                                 vendorPointer.setName(name);
                                 vendorPointer = vendorsGateway.update(vendorPointer);
                                 break;
                             }
                         }
                     }
-                    break;
                 }
 
+
                 // DELETE VENDOR
-                case 6: {
+                case 6 -> {
                     if (vendorPointer != null) {
                         vendorsGateway.delete(vendorPointer);
                         vendorPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH VENDOR
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Vendor search:");
                         System.out.println("1. Get by name");
                         System.out.println("2. Search by name");
@@ -736,44 +681,31 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
+                            case 1 -> {
+                                String name;
                                 Scanner scanner = new Scanner(System.in);
-                                String name = null;
-                                while(true){
+                                do {
                                     System.out.println("Enter vendor name:");
                                     name = scanner.nextLine();
-                                    if(pattern_name.matcher(name).matches()){
-                                        break;
-                                    }
-                                }
+                                } while (!pattern_name.matcher(name).matches());
                                 results = vendorsGateway.getByName(name);
-                                break;
                             }
-                            case 2: {
+                            case 2 -> {
+                                String name;
                                 Scanner scanner = new Scanner(System.in);
-                                String name = null;
-                                while(true){
+                                do {
                                     System.out.println("Enter vendor name:");
                                     name = scanner.nextLine();
-                                    if(pattern_name.matcher(name).matches()){
-                                        break;
-                                    }
-                                }
+                                } while (!pattern_name.matcher(name).matches());
                                 results = vendorsGateway.searchByName(name);
-                                break;
                             }
-                            case 0: {
+                            case 0 -> {
                                 localExitTrigger = false;
                             }
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    System.out.println("Exiting!");
-                    exitTrigger = false;
-                    break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -804,16 +736,11 @@ public class CLI {
             number = sc.nextInt();
 
             switch (number) {
-                case 1: {
-                    results = loadPage(productsGateway);
-                    break;
-                }
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 1 -> results = loadPage(productsGateway);
+                case 2 -> printLoadedData(results);
+
                 // CREATE PRODUCT
-                case 3: {
+                case 3 -> {
                     if (categoriesPointer != null && vendorPointer != null) {
                         Scanner scanner = new Scanner(System.in);
                         Products product = new Products();
@@ -821,14 +748,14 @@ public class CLI {
                         Vendors vendor = vendorPointer;
                         String model;
                         String specs;
-                        Integer price;
-                        Integer warranty_period;
+                        int price;
+                        int warranty_period;
                         String image;
 
                         product.setCategory(category);
                         product.setVendor(vendor);
 
-                        while(true){
+                        while (true) {
                             System.out.println("Enter model:");
                             model = scanner.nextLine();
                             if (pattern_name.matcher(model).matches())
@@ -867,13 +794,12 @@ public class CLI {
                         product.setImage(image);
 
                         productPointer = productsGateway.update(product);
-                    } else {
+                    } else
                         System.out.println("Category and vendor are not selected!");
-                    }
-                    break;
                 }
+
                 // GET PRODUCT
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -884,10 +810,10 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             productPointer = (Products) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT PRODUCT
-                case 5:{
+                case 5 -> {
                     if (productPointer != null) {
                         Scanner scanner = new Scanner(System.in);
                         String model;
@@ -896,7 +822,7 @@ public class CLI {
                         Integer warranty_period;
                         String image;
 
-                        if (categoriesPointer != null && productPointer.getCategory() != categoriesPointer){
+                        if (categoriesPointer != null && productPointer.getCategory() != categoriesPointer) {
                             Categories category = categoriesPointer;
                             System.out.println("Change category " + productPointer.getCategory().getName() + " to " + category.getName() + " ?");
                             System.out.println("(true - yes, false - no)");
@@ -911,7 +837,7 @@ public class CLI {
                         } else
                             System.out.println("To change category, select it.");
 
-                        if (vendorPointer != null && productPointer.getVendor() != vendorPointer){
+                        if (vendorPointer != null && productPointer.getVendor() != vendorPointer) {
                             Vendors vendor = vendorPointer;
                             System.out.println("Change category " + productPointer.getVendor().getName() + " to " + vendor.getName() + " ?");
                             System.out.println("(true - yes, false - no)");
@@ -927,7 +853,7 @@ public class CLI {
                         } else
                             System.out.println("To change vendor, select it.");
 
-                        while(true){
+                        while (true) {
                             System.out.println("Enter new model:");
                             model = scanner.nextLine();
                             if (pattern_name.matcher(model).matches())
@@ -936,7 +862,7 @@ public class CLI {
                                 System.out.println("Invalid input!");
                         }
 
-                        if (productPointer.getModel() != model){
+                        if (productPointer.getModel() != model) {
                             System.out.println("Change model " + productPointer.getModel() + " to " + model + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -950,7 +876,7 @@ public class CLI {
 
                         System.out.println("Enter new specs: ");
                         specs = scanner.nextLine();
-                        if (productPointer.getSpecs() != specs){
+                        if (productPointer.getSpecs() != specs) {
                             System.out.println("Change specs " + productPointer.getSpecs() + " to " + specs + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -968,7 +894,7 @@ public class CLI {
                             sc.next();
                         }
                         price = sc.nextInt();
-                        if (productPointer.getPrice() != price){
+                        if (productPointer.getPrice() != price) {
                             System.out.println("Change price " + productPointer.getPrice() + " to " + price + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -986,7 +912,7 @@ public class CLI {
                             sc.next();
                         }
                         warranty_period = sc.nextInt();
-                        if (productPointer.getWarrantyPeriod() != warranty_period){
+                        if (productPointer.getWarrantyPeriod() != warranty_period) {
                             System.out.println("Change warranty " + productPointer.getWarrantyPeriod() + " to " + warranty_period + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1003,23 +929,22 @@ public class CLI {
                         productPointer.setImage(image);
 
                         productPointer = productsGateway.update(productPointer);
-                    }
-                    else
+                    } else
                         System.out.println("Product are not selected!");
-                    break;
                 }
+
                 // DELETE PRODUCT
-                case 6: {
+                case 6 -> {
                     if (productPointer != null) {
                         productsGateway.delete(productPointer);
                         productPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH PRODUCT
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Product search:");
                         System.out.println("1. Search by model");
                         System.out.println("2. Search by specs");
@@ -1034,66 +959,71 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
-                                Scanner scanner = new Scanner(System.in);
-                                String name = null;
-                                while(true){
-                                    System.out.println("Enter model:");
+                            case 1 -> {
+                                try {
+                                    String name;
+                                    Scanner scanner = new Scanner(System.in);
+                                    do {
+                                        System.out.println("Enter model:");
+                                        name = scanner.nextLine();
+                                    } while (!pattern_name.matcher(name).matches());
+                                    System.out.println(results.size() + " records were searched.");
+                                } catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
+                                }
+                            }
+                            case 2 -> {
+                                try {
+                                    String specs;
+                                    Scanner scanner = new Scanner(System.in);
+                                    System.out.println("Enter specs:");
+                                    specs = scanner.nextLine();
+                                    results = productsGateway.searchBySpecs(specs);
+                                    System.out.println(results.size() + " records were searched.");
+                                } catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
+                                }
+                            }
+                            case 3 -> {
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    System.out.println("Enter vendor name:");
+                                    String name = null;
                                     name = scanner.nextLine();
-                                    if(pattern_name.matcher(name).matches()){
-                                        break;
+                                    List vendors = vendorsGateway.searchByName(name);
+                                    for (Object element : vendors) {
+                                        if (results != null)
+                                            results.addAll(productsGateway.searchByVendor((Vendors) element));
+                                        else
+                                            results = productsGateway.searchByVendor((Vendors) element);
                                     }
+                                } catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
                                 }
-                                results = productsGateway.searchByModel(name);
-                                break;
                             }
-                            case 2: {
-                                Scanner scanner = new Scanner(System.in);
-                                String specs = null;
-                                System.out.println("Enter specs:");
-                                specs = scanner.nextLine();
-                                results = productsGateway.searchBySpecs(specs);
-                                break;
-                            }
-                            case 3: {
-                                Scanner scanner = new Scanner(System.in);
-                                System.out.println("Enter vendor name:");
-                                String name = null;
-                                name = scanner.nextLine();
-                                List vendors = vendorsGateway.searchByName(name);
-                                for (int i = 0; i < vendors.size(); i++) {
-                                    Object element = vendors.get(i);
-                                    if (results != null)
-                                        results.addAll(productsGateway.searchByVendor((Vendors) element));
-                                    else
-                                        results = productsGateway.searchByVendor((Vendors) element);
+                            case 4 -> {
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    System.out.println("Enter category name:");
+                                    String name = null;
+                                    name = scanner.nextLine();
+                                    List categories = categoriesGateway.searchByName(name);
+                                    for (Object element : categories) {
+                                        if (results != null)
+                                            results.addAll(productsGateway.searchByCategory((Categories) element));
+                                        else
+                                            results = productsGateway.searchByCategory((Categories) element);
+                                    }
+                                } catch (Exception ex) {
+                                    System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 4: {
-                                Scanner scanner = new Scanner(System.in);
-                                System.out.println("Enter category name:");
-                                String name = null;
-                                name = scanner.nextLine();
-                                List categories = categoriesGateway.searchByName(name);
-
-                                for (int i = 0; i < categories.size(); i++) {
-                                    Object element = categories.get(i);
-                                    if (results != null)
-                                        results.addAll(productsGateway.searchByCategory((Categories) element));
-                                    else
-                                        results = productsGateway.searchByCategory((Categories) element);
-                                }
-                                break;
-                            }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
                     break;
                 }
-                case 0: {
+                case 0 -> {
                     System.out.println("Exiting!");
                     exitTrigger = false;
                     break;
@@ -1126,17 +1056,11 @@ public class CLI {
             number = sc.nextInt();
 
             switch (number) {
-                case 1: {
-                    results = loadPage(clientsGateway);
-                    break;
-                }
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
-                // CREATE CLIENT
-                case 3: {
+                case 1 -> results = loadPage(clientsGateway);
+                case 2 -> printLoadedData(results);
 
+                // CREATE CLIENT
+                case 3 -> {
                     Clients client = new Clients();
 
                     System.out.println(client.toString());
@@ -1169,17 +1093,17 @@ public class CLI {
 
                     Scanner scanner_phone = new Scanner(System.in);
                     do {
-                    System.out.println("Enter contact number:");
-                    contactNumber = scanner_phone.nextLine();
+                        System.out.println("Enter contact number:");
+                        contactNumber = scanner_phone.nextLine();
                     }
                     while (contactNumber.isEmpty());
                     client.setContactNumber(contactNumber);
 
                     clientPointer = clientsGateway.update(client);
-                    break;
                 }
+
                 // GET CLIENT
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -1190,10 +1114,10 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             clientPointer = (Clients) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT CLIENT
-                case 5:{
+                case 5 -> {
                     if (clientPointer != null) {
                         Scanner scanner = new Scanner(System.in);
 
@@ -1207,7 +1131,7 @@ public class CLI {
                             firstName = scanner.nextLine();
                         }
                         while (firstName.isEmpty());
-                        if (clientPointer.getFirstName() != firstName){
+                        if (clientPointer.getFirstName() != firstName) {
                             System.out.println("Change firstname " + clientPointer.getFirstName() + " to " + firstName + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1220,11 +1144,11 @@ public class CLI {
                         }
 
                         do {
-                        System.out.println("Enter new lastname: ");
-                        lastName = scanner.nextLine();
+                            System.out.println("Enter new lastname: ");
+                            lastName = scanner.nextLine();
                         }
                         while (lastName.isEmpty());
-                        if (clientPointer.getLastName() != lastName){
+                        if (clientPointer.getLastName() != lastName) {
                             System.out.println("Change lastname " + clientPointer.getLastName() + " to " + lastName + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1238,7 +1162,7 @@ public class CLI {
 
                         System.out.println("Enter email:");
                         email = scanner.nextLine();
-                        if (clientPointer.getEmail() != email){
+                        if (clientPointer.getEmail() != email) {
                             System.out.println("Change email " + clientPointer.getEmail() + " to " + email + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1255,7 +1179,7 @@ public class CLI {
                             contactNumber = scanner.nextLine();
                         }
                         while (contactNumber.isEmpty());
-                        if (clientPointer.getContactNumber() != contactNumber){
+                        if (clientPointer.getContactNumber() != contactNumber) {
                             System.out.println("Change contact number " + clientPointer.getContactNumber() + " to " + contactNumber + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1268,23 +1192,23 @@ public class CLI {
                         }
 
                         clientPointer = clientsGateway.update(clientPointer);
-                    }
-                    else
+                    } else
                         System.out.println("Client are not selected!");
                     break;
                 }
-                // delete
-                case 6: {
+
+                // DELETE CLIENT
+                case 6 -> {
                     if (clientPointer != null) {
                         clientsGateway.delete(clientPointer);
                         clientPointer = null;
                     }
-                    break;
                 }
-                // search
-                case 7: {
+
+                // SEARCH CLIENT
+                case 7 -> {
                     Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                    while (localExitTrigger) {
                         System.out.println("Clients search:");
                         System.out.println("1. Search by firstname");
                         System.out.println("2. Search by lastname");
@@ -1299,53 +1223,43 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
+                            case 1 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String firstname = null;
                                 System.out.println("Enter firstname:");
                                 firstname = scanner.nextLine();
                                 results = clientsGateway.searchByFirstname(firstname);
                                 System.out.println(results.size() + " records were searched.");
-                                break;
                             }
-                            case 2: {
+                            case 2 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String lastname = null;
                                 System.out.println("Enter firstname:");
                                 lastname = scanner.nextLine();
                                 results = clientsGateway.searchByLastname(lastname);
                                 System.out.println(results.size() + " records were searched.");
-                                break;
                             }
-                            case 3: {
+                            case 3 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String email = null;
                                 System.out.println("Enter email:");
                                 email = scanner.nextLine();
                                 results = clientsGateway.searchByEmail(email);
                                 System.out.println(results.size() + " records were searched.");
-                                break;
                             }
-                            case 4: {
+                            case 4 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 String contactNumber = null;
                                 System.out.println("Enter contact number:");
                                 contactNumber = scanner.nextLine();
                                 results = clientsGateway.searchByContactNumber(contactNumber);
                                 System.out.println(results.size() + " records were searched.");
-                                break;
                             }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    exitTrigger = false;
-                    break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -1374,17 +1288,10 @@ public class CLI {
             number = sc.nextInt();
 
             switch (number) {
-                case 1: {
-                    results = loadPageForOrders(ordersGateway);
-
-                    break;
-                }
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 1 -> results = loadPageForOrders(ordersGateway);
+                case 2 -> printLoadedData(results);
                 // CREATE ORDER
-                case 3: {
+                case 3 -> {
                     if (clientPointer != null && storePointer != null) {
                         Orders order = new Orders();
 
@@ -1397,7 +1304,7 @@ public class CLI {
                         String orderTime;
 
                         Scanner scanner_date = new Scanner(System.in);
-                        while(true){
+                        while (true) {
                             System.out.println("Enter order date (format YYYY-MM-DD):");
                             orderDate = scanner_date.nextLine();
                             if (pattern_date.matcher(orderDate).matches())
@@ -1407,7 +1314,7 @@ public class CLI {
                         order.setOrderDate(orderDate);
 
                         Scanner scanner_time = new Scanner(System.in);
-                        while(true){
+                        while (true) {
                             System.out.println("Enter order time (format HH:MM:SS):");
                             orderTime = scanner_time.nextLine();
                             if (pattern_time.matcher(orderTime).matches())
@@ -1429,13 +1336,12 @@ public class CLI {
 
                         orderPointer = ordersGateway.update(order);
 
-                    } else {
+                    } else
                         System.out.println("Client and store are not selected!");
-                    }
-                    break;
                 }
+
                 // GET ORDER
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -1446,17 +1352,17 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             orderPointer = (Orders) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT ORDER
-                case 5: {
+                case 5 -> {
                     if (orderPointer != null) {
 
                         // CHANGE CLIENT
                         Scanner scanner_client = new Scanner(System.in);
-                        if (clientPointer != null && orderPointer.getClient() != clientPointer){
+                        if (clientPointer != null && orderPointer.getClient() != clientPointer) {
                             Clients client = clientPointer;
-                            System.out.println("Change client " + orderPointer.getClient()+ " to " + clientPointer + " ?");
+                            System.out.println("Change client " + orderPointer.getClient() + " to " + clientPointer + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_client.hasNextBoolean()) {
                                 System.out.println("Invalid input!");
@@ -1470,7 +1376,7 @@ public class CLI {
 
                         // CHANGE STORE
                         Scanner scanner_store = new Scanner(System.in);
-                        if (storePointer != null && orderPointer.getStore() != storePointer){
+                        if (storePointer != null && orderPointer.getStore() != storePointer) {
                             Stores store = storePointer;
                             System.out.println("Change store " + orderPointer.getStore() + " to " + store + " ?");
                             System.out.println("(true - yes, false - no)");
@@ -1487,7 +1393,7 @@ public class CLI {
                         // CHANGE ORDER DATE
                         Scanner scanner_date = new Scanner(System.in);
                         String input = null;
-                        while(true){
+                        while (true) {
                             System.out.println("Enter new order date (format YYYY-MM-DD):");
                             input = scanner_date.nextLine();
                             if (pattern_date.matcher(input).matches())
@@ -1495,7 +1401,7 @@ public class CLI {
                             System.out.println("Invalid input!");
                         }
                         String orderDate = input;
-                        if (orderPointer.getOrderDate() != orderDate){
+                        if (orderPointer.getOrderDate() != orderDate) {
                             System.out.println("Change order date " + orderPointer.getOrderDate() + " to " + orderDate + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_date.hasNextBoolean()) {
@@ -1509,7 +1415,7 @@ public class CLI {
 
                         // CHANGE ORDER TIME
                         Scanner scanner_time = new Scanner(System.in);
-                        while(true){
+                        while (true) {
                             System.out.println("Enter order time (format HH:MM:SS):");
                             input = scanner_time.nextLine();
                             if (pattern_time.matcher(input).matches())
@@ -1517,7 +1423,7 @@ public class CLI {
                             System.out.println("Invalid input!");
                         }
                         String orderTime = input;
-                        if (orderPointer.getOrderTime() != orderTime){
+                        if (orderPointer.getOrderTime() != orderTime) {
                             System.out.println("Change order time " + orderPointer.getOrderTime() + " to " + orderTime + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_time.hasNextBoolean()) {
@@ -1544,23 +1450,22 @@ public class CLI {
                         // UPDATE
                         orderPointer.setShoppingCart(null);
                         orderPointer = ordersGateway.update(orderPointer);
-                    }
-                    else
+                    } else
                         System.out.println("Order are not selected!");
-                    break;
                 }
+
                 // DELETE ORDER
-                case 6: {
+                case 6 -> {
                     if (orderPointer != null) {
                         ordersGateway.delete(orderPointer);
                         orderPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH ORDER
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Order search:");
                         System.out.println("1. Search by client");
                         System.out.println("2. Search by store");
@@ -1670,13 +1575,8 @@ public class CLI {
                             }
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    System.out.println("Exiting!");
-                    exitTrigger = false;
-                    break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -1705,18 +1605,12 @@ public class CLI {
             number = sc.nextInt();
 
             switch (number) {
-                // Load data
-                case 1: {
-                    results = loadPage(couriersGateway);
-                    break;
-                }
-                // Print loaded data
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                // LOAD DATA
+                case 1 -> results = loadPage(couriersGateway);
+                // PRINT LOADED DATA
+                case 2 -> printLoadedData(results);
                 // CREATE COURIER
-                case 3: {
+                case 3 -> {
                     Scanner scanner = new Scanner(System.in);
                     Couriers courier = new Couriers();
 
@@ -1751,10 +1645,10 @@ public class CLI {
                     courier.setContactNumber(contactNumber);
 
                     courierPointer = couriersGateway.update(courier);
-                    break;
                 }
+
                 // GET COURIER
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -1765,10 +1659,10 @@ public class CLI {
                         if (number < results.size() && number > -1)
                             courierPointer = (Couriers) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT COURIER
-                case 5:{
+                case 5 -> {
                     if (courierPointer != null) {
                         Scanner scanner = new Scanner(System.in);
 
@@ -1782,7 +1676,7 @@ public class CLI {
                             firstName = scanner.nextLine();
                         }
                         while (firstName.isEmpty());
-                        if (courierPointer.getFirstName() != firstName){
+                        if (courierPointer.getFirstName() != firstName) {
                             System.out.println("Change firstname " + courierPointer.getFirstName() + " to " + firstName + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1799,7 +1693,7 @@ public class CLI {
                             lastName = scanner.nextLine();
                         }
                         while (lastName.isEmpty());
-                        if (courierPointer.getLastName() != lastName){
+                        if (courierPointer.getLastName() != lastName) {
                             System.out.println("Change lastname " + courierPointer.getLastName() + " to " + lastName + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1813,7 +1707,7 @@ public class CLI {
 
                         System.out.println("Enter email:");
                         email = scanner.nextLine();
-                        if (courierPointer.getEmail() != email){
+                        if (courierPointer.getEmail() != email) {
                             System.out.println("Change email " + courierPointer.getEmail() + " to " + email + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1830,7 +1724,7 @@ public class CLI {
                             contactNumber = scanner.nextLine();
                         }
                         while (contactNumber.isEmpty());
-                        if (courierPointer.getContactNumber() != contactNumber){
+                        if (courierPointer.getContactNumber() != contactNumber) {
                             System.out.println("Change contact number " + courierPointer.getContactNumber() + " to " + contactNumber + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!sc.hasNextBoolean()) {
@@ -1843,23 +1737,22 @@ public class CLI {
                         }
 
                         courierPointer = couriersGateway.update(courierPointer);
-                    }
-                    else
+                    } else
                         System.out.println("Client are not selected!");
-                    break;
                 }
+
                 // DELETE COURIER
-                case 6: {
+                case 6 -> {
                     if (courierPointer != null) {
                         couriersGateway.delete(courierPointer);
                         courierPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH COURIER
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Couriers search:");
                         System.out.println("1. Search by firstname");
                         System.out.println("2. Search by lastname");
@@ -1874,33 +1767,29 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
+                            case 1 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     System.out.println("Enter firstname:");
                                     String firstname = scanner.nextLine();
                                     results = couriersGateway.searchByFirstname(firstname);
                                     System.out.println(results.size() + " records were searched.");
-                                }
-                                catch (Exception ex) {
+                                } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 2: {
+                            case 2 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     System.out.println("Enter firstname:");
                                     String lastname = scanner.nextLine();
                                     results = couriersGateway.searchByLastname(lastname);
                                     System.out.println(results.size() + " records were searched.");
-                                }
-                                catch (Exception ex) {
+                                } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 3: {
+                            case 3 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     String email = null;
@@ -1908,36 +1797,26 @@ public class CLI {
                                     email = scanner.nextLine();
                                     results = couriersGateway.searchByEmail(email);
                                     System.out.println(results.size() + " records were searched.");
-                                }
-                                catch (Exception ex) {
+                                } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 4: {
+                            case 4 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     System.out.println("Enter contact number:");
                                     String contactNumber = scanner.nextLine();
                                     results = couriersGateway.searchByContactNumber(contactNumber);
                                     System.out.println(results.size() + " records were searched.");
-                                }
-                                catch (Exception ex) {
+                                } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    exitTrigger = false;
-                    break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -1966,73 +1845,64 @@ public class CLI {
             number = sc.nextInt();
 
             switch (number) {
-                case 1: {
-                    results = loadPage(deliveryGateway);
-                    break;
-                }
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 1 -> results = loadPage(deliveryGateway);
+                case 2 -> printLoadedData(results);
                 // CREATE DELIVERY
-                case 3: {
+                case 3 -> {
                     if (courierPointer != null && orderPointer != null) {
                         Delivery delivery = new Delivery();
 
                         List checkExist = deliveryGateway.getByOrder(orderPointer);
 
-                        if (checkExist.isEmpty()){
-                        Couriers courier = courierPointer;
-                        delivery.setCourier(courier);
-                        Orders order = orderPointer;
-                        delivery.setOrder(order);
+                        if (checkExist.isEmpty()) {
+                            Couriers courier = courierPointer;
+                            delivery.setCourier(courier);
+                            Orders order = orderPointer;
+                            delivery.setOrder(order);
 
-                        String deliveryDate;
-                        String deliveryTime;
-                        String deliveryAddress;
+                            String deliveryDate;
+                            String deliveryTime;
+                            String deliveryAddress;
 
-                        Scanner scanner_date = new Scanner(System.in);
-                        while(true){
-                            System.out.println("Enter delivery date (format YYYY-MM-DD):");
-                            deliveryDate = scanner_date.nextLine();
-                            if (pattern_date.matcher(deliveryDate).matches())
-                                break;
-                            System.out.println("Invalid input!");
-                        }
-                        delivery.setDeliveryDate(deliveryDate);
+                            Scanner scanner_date = new Scanner(System.in);
+                            while (true) {
+                                System.out.println("Enter delivery date (format YYYY-MM-DD):");
+                                deliveryDate = scanner_date.nextLine();
+                                if (pattern_date.matcher(deliveryDate).matches())
+                                    break;
+                                System.out.println("Invalid input!");
+                            }
+                            delivery.setDeliveryDate(deliveryDate);
 
-                        Scanner scanner_time = new Scanner(System.in);
-                        while(true){
-                            System.out.println("Enter delivery time (format HH:MM:SS):");
-                            deliveryTime = scanner_time.nextLine();
-                            if (pattern_time.matcher(deliveryTime).matches())
-                                break;
-                            System.out.println("Invalid input!");
-                        }
-                        delivery.setDeliveryTime(deliveryTime);
+                            Scanner scanner_time = new Scanner(System.in);
+                            while (true) {
+                                System.out.println("Enter delivery time (format HH:MM:SS):");
+                                deliveryTime = scanner_time.nextLine();
+                                if (pattern_time.matcher(deliveryTime).matches())
+                                    break;
+                                System.out.println("Invalid input!");
+                            }
+                            delivery.setDeliveryTime(deliveryTime);
 
-                        Scanner scanner_address = new Scanner(System.in);
-                        do {
-                            System.out.println("Enter delivery address:");
-                            deliveryAddress = scanner_address.nextLine();
-                        }
-                        while (deliveryAddress.isEmpty());
-                        delivery.setDeliveryAddress(deliveryAddress);
+                            Scanner scanner_address = new Scanner(System.in);
+                            do {
+                                System.out.println("Enter delivery address:");
+                                deliveryAddress = scanner_address.nextLine();
+                            }
+                            while (deliveryAddress.isEmpty());
+                            delivery.setDeliveryAddress(deliveryAddress);
 
-                        deliveryPointer = deliveryGateway.update(delivery);
-                        }
-                        else {
+                            deliveryPointer = deliveryGateway.update(delivery);
+                        } else {
                             System.out.println("Delivery with such an order already exists!");
                             deliveryPointer = (Delivery) checkExist.get(0);
                         }
-
-                    } else {
+                    } else
                         System.out.println("Courier and order are not selected!");
-                    }
-                    break;
                 }
+
                 // GET DELIVERY
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -2044,17 +1914,17 @@ public class CLI {
                             deliveryPointer = (Delivery) results.get(number);
                     } else
                         System.out.println("Loaded data is not found!");
-                    break;
                 }
+
                 // EDIT DELIVERY
-                case 5: {
+                case 5 -> {
                     if (deliveryGateway != null && deliveryPointer != null) {
 
                         // CHANGE COURIER
                         Scanner scanner_courier = new Scanner(System.in);
-                        if (courierPointer != null && deliveryPointer.getCourier() != courierPointer){
+                        if (courierPointer != null && deliveryPointer.getCourier() != courierPointer) {
                             Couriers courier = courierPointer;
-                            System.out.println("Change courier " + deliveryPointer.getCourier()+ " to " + courierPointer + " ?");
+                            System.out.println("Change courier " + deliveryPointer.getCourier() + " to " + courierPointer + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_courier.hasNextBoolean()) {
                                 System.out.println("Invalid input!");
@@ -2067,7 +1937,7 @@ public class CLI {
                             System.out.println("To change courier, select it.");
                         // CHANGE ORDER
                         Scanner scanner_order = new Scanner(System.in);
-                        if (orderPointer != null && deliveryPointer.getOrder() != orderPointer){
+                        if (orderPointer != null && deliveryPointer.getOrder() != orderPointer) {
                             Orders order = orderPointer;
                             System.out.println("Change order " + deliveryPointer.getOrder() + " to " + orderPointer + " ?");
                             System.out.println("(true - yes, false - no)");
@@ -2084,7 +1954,7 @@ public class CLI {
                         // CHANGE DELIVERY DATE
                         Scanner scanner_date = new Scanner(System.in);
                         String input = null;
-                        while(true){
+                        while (true) {
                             System.out.println("Enter new delivery date (format YYYY-MM-DD):");
                             input = scanner_date.nextLine();
                             if (pattern_date.matcher(input).matches())
@@ -2092,7 +1962,7 @@ public class CLI {
                             System.out.println("Invalid input!");
                         }
                         String deliveryDate = input;
-                        if (deliveryPointer.getDeliveryDate() != deliveryDate){
+                        if (deliveryPointer.getDeliveryDate() != deliveryDate) {
                             System.out.println("Change delivery date " + deliveryPointer.getDeliveryDate() + " to " + deliveryDate + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_date.hasNextBoolean()) {
@@ -2101,12 +1971,12 @@ public class CLI {
                             }
                             boolean t = scanner_date.nextBoolean();
                             if (t)
-                                deliveryPointer.setDeliveryDate(deliveryDate.toString());
+                                deliveryPointer.setDeliveryDate(deliveryDate);
                         }
 
                         // CHANGE DELIVERY TIME
                         Scanner scanner_time = new Scanner(System.in);
-                        while(true){
+                        while (true) {
                             System.out.println("Enter new delivery time (format HH:MM:SS):");
                             input = scanner_time.nextLine();
                             if (pattern_time.matcher(input).matches())
@@ -2114,7 +1984,7 @@ public class CLI {
                             System.out.println("Invalid input!");
                         }
                         String deliveryTime = input;
-                        if (deliveryPointer.getDeliveryTime() != deliveryTime){
+                        if (deliveryPointer.getDeliveryTime() != deliveryTime) {
                             System.out.println("Change delivery time " + deliveryPointer.getDeliveryTime() + " to " + deliveryTime + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_time.hasNextBoolean()) {
@@ -2130,7 +2000,7 @@ public class CLI {
                         Scanner scanner_address = new Scanner(System.in);
                         System.out.println("Enter new delivery address:");
                         String deliveryAddress = scanner_address.nextLine();
-                        if (deliveryPointer.getDeliveryAddress() != deliveryAddress){
+                        if (deliveryPointer.getDeliveryAddress() != deliveryAddress) {
                             System.out.println("Change delivery address " + deliveryPointer.getDeliveryAddress() + " to " + deliveryAddress + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner_address.hasNextBoolean()) {
@@ -2143,23 +2013,22 @@ public class CLI {
                         }
                         // UPDATE DELIVERY
                         deliveryPointer = deliveryGateway.update(deliveryPointer);
-                    }
-                    else
+                    } else
                         System.out.println("Delivery are not selected!");
-                    break;
                 }
+
                 // DELETE DELIVERY
-                case 6: {
+                case 6 -> {
                     if (deliveryPointer != null) {
                         deliveryGateway.delete(deliveryPointer);
                         deliveryPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH DELIVERY
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Couriers search:");
                         System.out.println("1. Search by courier");
                         System.out.println("2. Search by order");
@@ -2175,7 +2044,7 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
+                            case 1 -> {
                                 try {
                                     System.out.println("Search by " + courierPointer.toString());
                                     results = deliveryGateway.getByCourier(courierPointer);
@@ -2183,9 +2052,8 @@ public class CLI {
                                 } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 2: {
+                            case 2 -> {
                                 try {
                                     System.out.println("Search by " + orderPointer.toString());
                                     results = deliveryGateway.getByOrder(orderPointer);
@@ -2193,13 +2061,12 @@ public class CLI {
                                 } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 3: {
+                            case 3 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     String input = null;
-                                    while(true){
+                                    while (true) {
                                         System.out.println("Enter starting date (format YYYY-MM-DD):");
                                         input = scanner.nextLine();
                                         if (pattern_date.matcher(input).matches())
@@ -2211,13 +2078,12 @@ public class CLI {
                                 } catch (Exception e) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 4:{
+                            case 4 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     String input = null;
-                                    while(true){
+                                    while (true) {
                                         System.out.println("Enter starting time (format HH:MM:SS):");
                                         input = scanner.nextLine();
                                         if (pattern_time.matcher(input).matches())
@@ -2225,7 +2091,7 @@ public class CLI {
                                         System.out.println("Invalid input!");
                                     }
                                     String startingTime = input;
-                                    while(true){
+                                    while (true) {
                                         System.out.println("Enter ending time (format HH:MM:SS):");
                                         input = scanner.nextLine();
                                         if (pattern_time.matcher(input).matches())
@@ -2239,10 +2105,8 @@ public class CLI {
                                 } catch (Exception e) {
                                     System.out.println(0 + " records were searched.");
                                 }
-
-                                break;
                             }
-                            case 5: {
+                            case 5 -> {
                                 try {
                                     Scanner scanner = new Scanner(System.in);
                                     String deliveryAddress = null;
@@ -2253,18 +2117,12 @@ public class CLI {
                                 } catch (Exception ex) {
                                     System.out.println(0 + " records were searched.");
                                 }
-                                break;
                             }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    exitTrigger = false; break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }
@@ -2293,25 +2151,16 @@ public class CLI {
             number = sc.nextInt();
 
             switch (number) {
-                case 1: {
-                    results = loadPage(shoppingCartGateway);
-                    break;
-                }
-                case 2: {
-                    printLoadedData(results);
-                    break;
-                }
+                case 1 -> results = loadPage(shoppingCartGateway);
+                case 2 -> printLoadedData(results);
                 // ADD TO SHOPPING CART
-                case 3: {
+                case 3 -> {
                     if (orderPointer != null && productPointer != null) {
                         Scanner scanner = new Scanner(System.in);
-
                         ShoppingCart shoppingCart = new ShoppingCart();
-
                         Integer amount;
-
                         List result = shoppingCartGateway.getByOrderAndProduct(orderPointer, productPointer);
-                        if (result == null || result.isEmpty()){
+                        if (result == null) {
                             Orders order = orderPointer;
                             shoppingCart.setOrder(order);
                             Products product = productPointer;
@@ -2323,8 +2172,7 @@ public class CLI {
                             }
                             amount = scanner.nextInt();
                             if (amount > 0) shoppingCart.setAmount(amount);
-                        }
-                        else {
+                        } else {
                             shoppingCart = (ShoppingCart) result.get(0);
                             amount = shoppingCart.getAmount();
                             amount++;
@@ -2334,10 +2182,10 @@ public class CLI {
                     } else {
                         System.out.println("Order and product are not selected!");
                     }
-                    break;
                 }
+
                 // GET SHOPPING CART
-                case 4: {
+                case 4 -> {
                     if (results != null) {
                         System.out.println("Input index:");
                         while (!sc.hasNextInt()) {
@@ -2348,15 +2196,15 @@ public class CLI {
                         if (number < results.size() && number >= 0)
                             shoppingCartPointer = (ShoppingCart) results.get(number);
                     }
-                    break;
                 }
+
                 // EDIT SHOPPING CART
-                case 5: {
+                case 5 -> {
                     if (shoppingCartPointer != null) {
                         Scanner scanner = new Scanner(System.in);
 
                         // CHANGE ORDER
-                        if (orderPointer != null && shoppingCartPointer.getOrder() != orderPointer){
+                        if (orderPointer != null && shoppingCartPointer.getOrder() != orderPointer) {
                             System.out.println("Change order " + shoppingCartPointer.getOrder() + " to " + orderPointer + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner.hasNextBoolean()) {
@@ -2370,7 +2218,7 @@ public class CLI {
                             System.out.println("To change order, select it.");
 
                         // CHANGE PRODUCT
-                        if (productPointer != null && shoppingCartPointer.getProduct() != productPointer){
+                        if (productPointer != null && shoppingCartPointer.getProduct() != productPointer) {
                             System.out.println("Change product " + shoppingCartPointer.getProduct() + " to " + productPointer + " ?");
                             System.out.println("(true - yes, false - no)");
                             while (!scanner.hasNextBoolean()) {
@@ -2386,7 +2234,7 @@ public class CLI {
                         // CHANGE AMOUNT
                         if (orderPointer != null && productPointer != null) {
                             List result = shoppingCartGateway.getByOrderAndProduct(orderPointer, productPointer);
-                            if (!result.isEmpty()) {
+                            if (result != null) {
                                 shoppingCartPointer = (ShoppingCart) result.get(0);
                             }
                         }
@@ -2416,23 +2264,22 @@ public class CLI {
 
                         // UPDATE SHOPPING CART
                         shoppingCartPointer = shoppingCartGateway.update(shoppingCartPointer);
-                    }
-                    else
+                    } else
                         System.out.println("shopping cart are not selected!");
-                    break;
                 }
+
                 // DELETE SHOPPING CART
-                case 6: {
+                case 6 -> {
                     if (shoppingCartPointer != null) {
                         shoppingCartGateway.delete(shoppingCartPointer);
                         shoppingCartPointer = null;
                     }
-                    break;
                 }
+
                 // SEARCH SHOPPING CART
-                case 7: {
-                    Boolean localExitTrigger = true;
-                    while (localExitTrigger){
+                case 7 -> {
+                    boolean localExitTrigger = true;
+                    while (localExitTrigger) {
                         System.out.println("Couriers search:");
                         System.out.println("1. Search by order");
                         System.out.println("2. Search by product");
@@ -2446,23 +2293,21 @@ public class CLI {
                         number = sc.nextInt();
 
                         switch (number) {
-                            case 1: {
-                                if (orderPointer != null){
+                            case 1 -> {
+                                if (orderPointer != null) {
                                     results = shoppingCartGateway.searchByOrder(orderPointer);
                                     System.out.println(results.size() + " records were searched.");
                                 } else
                                     System.out.println("To search by order, select it.");
-                                break;
                             }
-                            case 2: {
-                                if (productPointer != null){
+                            case 2 -> {
+                                if (productPointer != null) {
                                     results = shoppingCartGateway.searchByProduct(productPointer);
                                     System.out.println(results.size() + " records were searched.");
                                 } else
                                     System.out.println("To search by product, select it.");
-                                break;
                             }
-                            case 3: {
+                            case 3 -> {
                                 Scanner scanner = new Scanner(System.in);
                                 Integer amount = null;
                                 System.out.println("Enter amount:");
@@ -2473,18 +2318,12 @@ public class CLI {
                                 amount = scanner.nextInt();
                                 results = shoppingCartGateway.searchByAmount(amount);
                                 System.out.println(results.size() + " records were searched.");
-                                break;
                             }
-                            case 0: {
-                                localExitTrigger = false;
-                            }
+                            case 0 -> localExitTrigger = false;
                         }
                     }
-                    break;
                 }
-                case 0: {
-                    exitTrigger = false; break;
-                }
+                case 0 -> exitTrigger = false;
             }
         }
     }

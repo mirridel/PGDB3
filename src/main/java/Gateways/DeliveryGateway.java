@@ -1,13 +1,10 @@
 package Gateways;
 
-import Tables.Clients;
 import Tables.Couriers;
 import Tables.Delivery;
 import Tables.Orders;
 
 import java.net.URL;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 public class DeliveryGateway extends AbstractGateway<Delivery> {

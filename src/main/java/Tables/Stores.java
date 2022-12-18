@@ -3,8 +3,6 @@ package Tables;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.*;
-
 public class Stores {
 
 	@SerializedName("id")

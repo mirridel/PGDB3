@@ -3,9 +3,6 @@ package Tables;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class Delivery {
     @SerializedName("id")
     @Expose

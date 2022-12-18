@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Clients {
     @SerializedName("id")
-    @Expose(serialize = true, deserialize = true)
     private Integer id;
     @SerializedName("first_name")
     @Expose

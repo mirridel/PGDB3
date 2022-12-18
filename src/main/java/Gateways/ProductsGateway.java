@@ -16,13 +16,6 @@ import java.util.List;
 
 public class ProductsGateway extends AbstractGateway<Products> {
 
-
-    @Override
-    public Products update(Products data) {
-
-        return super.update(data);
-    }
-
     public List searchByCategory(Categories category){
 
         List list = null;
@@ -50,75 +43,26 @@ public class ProductsGateway extends AbstractGateway<Products> {
     };
 
     public List searchByModel(String model){
+
         List list = null;
         try {
             URL url = new URL ("http://localhost:5000/rest/products/search_by_model/" + model);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-
-            StringBuilder response = new StringBuilder();;
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-            }
+            StringBuilder response = searchManager(url);
             list = stringToArray(response.toString(), getSH());
 
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (list.isEmpty())
-            return null;
-        else
-            return list;
+        } catch (Exception e) { }
+        return list;
     };
 
     public List searchBySpecs(String specs){
         List list = null;
         try {
             URL url = new URL ("http://localhost:5000/rest/products/search_by_specs/" + specs);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setDoOutput(true);
-
-            StringBuilder response = new StringBuilder();;
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-            }
+            StringBuilder response = searchManager(url);
             list = stringToArray(response.toString(), getSH());
 
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (list.isEmpty())
-            return null;
-        else
-            return list;
+        } catch (Exception e) { }
+        return list;
     };
 
     @Override
